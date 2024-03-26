@@ -1,9 +1,8 @@
 import express from 'express';
-import { graphqlHTTP } from ('express-graphql');
-import schema from ('./schema');
+import { createHandler } from 'graphql-http/lib/use/express';
+import schema from './schema.js';
 
 const app = express();
-
 // Middleware de autenticação
 app.use('/graphql', (req, res, next) => {
   const token = req.headers['authorization'];
@@ -13,9 +12,6 @@ app.use('/graphql', (req, res, next) => {
   next(); // Continua para o GraphQL se o token estiver correto
 });
 
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true, // Habilita a interface GraphiQL
-}));
+app.all('/graphql', createHandler({schema:schema,}));
 
 app.listen(4000, () => console.log('Server running on http://localhost:4000/graphql'));

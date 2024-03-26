@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLList, GraphQLNonNull, GraphQLID } = require('graphql');
+import { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLList, GraphQLNonNull, GraphQLID } from 'graphql';
 
 // Mock database
 const users = [{ id: '1', name: 'John Doe', email: 'john@example.com' }];
@@ -88,7 +88,7 @@ const Mutation = new GraphQLObjectType({
   },
 });
 
-module.exports = new GraphQLSchema({
+export default new GraphQLSchema({
   query: RootQuery,
   mutation: Mutation,
 });
