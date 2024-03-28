@@ -5,10 +5,11 @@ class Produtos extends Model {
       super.init(
          {
             produto_id: {
-               type: DataTypes.UUID,
+               type: DataTypes.INTEGER,
                allowNull: false,
-               defaultValue: sequelize.fn('random_uuid'),
+               autoIncrement: true,
                primaryKey: true,
+               unique: true
             },
             produto_nome: {
                type: DataTypes.STRING,
@@ -21,10 +22,11 @@ class Produtos extends Model {
             produto_valor: {
                type: DataTypes.DECIMAL,
                allowNull: true
-            }
+            },
          },
          {
             sequelize,
+            timestamps: true,        
          }
       );
 

@@ -1,12 +1,18 @@
 import { Sequelize } from "sequelize";
+import Produtos from "../models/produtos.js";
+import Usuarios from "../models/usuarios.js";
 import 'dotenv'
 import OracleDB from "oracledb";
 
-const dbTeste = new Sequelize(process.env.DB_NAME,process.env.DB_LOGIN,process.env.DB_SENHA,{  
+const models = [
+    Usuarios,
+    Produtos
+]
+
+const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_LOGIN,process.env.DB_SENHA,{  
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
     dialect: 'oracle',
-    
     define: {
         timestamps: false,
         underscored: false,
@@ -24,7 +30,7 @@ const dbTeste = new Sequelize(process.env.DB_NAME,process.env.DB_LOGIN,process.e
     }
 })
 
-dbTeste
+sequelize
     .authenticate()
     .then(() => {
         console.log("Conectado ao banco "+process.env.DB_NAME)
@@ -32,4 +38,11 @@ dbTeste
     console.log("Erro ao conectar com "+process.env.DB_NAME, error)
 })
 
-export default dbTeste
+models.map((model)=>{
+    model.init(sequelize)
+})
+
+
+sequelize.sync()
+
+export default sequelize

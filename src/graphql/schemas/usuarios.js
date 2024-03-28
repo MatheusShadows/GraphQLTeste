@@ -1,40 +1,56 @@
 import { gql } from 'apollo-server-express'
 
-const usuarios_gql = gql(`
+const usuariosSchema = gql(`
    type Usuario {
       usuario_id: Int!
-      usuario_name: String!
+      usuario_nome: String!
       usuario_email: String!
-      usuario_password: String!
-      usuario_data_nascimento: String!
+      usuario_senha: String!
+      usuario_data_nascimento: String
    }
 
-   extend type Mutation {
-      register(input: RegisterInput!): RegisterResponse
-      login(input: LoginInput!): LoginResponse
+   type Mutation {
+      createUser(input: RegistroUsuarioInput!): Usuario
+      updateUser(input: AtualizarUsuarioInput!): Usuario
+      login(input: LoginUsuarioInput!): LoginUsuarioResponse
    }
 
-   type RegisterResponse {
-      id: Int!
-      name: String!
-      email: String!
+   type Query {
+      getUser(input: QueryUsuario!): Usuario
+      getAllUsers: [Usuario]
    }
 
-   input RegisterInput {
-      name: String!
-      email: String!
-      password: String!
+   input QueryUsuario {
+      usuario_id: Int!
    }
 
-   input LoginInput {
-      email: String!
-      password: String!
+   input RegistroUsuarioInput {
+      usuario_nome: String!
+      usuario_email: String!
+      usuario_senha: String!
+      usuario_data_nascimento: String
    }
 
-   type LoginResponse {
-      id: Int!
-      name: String!
-      email: String!
+   input AtualizarUsuarioInput {
+      usuario_id: Int!
+      usuario_nome: String
+      usuario_email: String
+      usuario_senha: String
+      usuario_data_nascimento: String
+   }
+
+   input LoginUsuarioInput {
+      usuario_email: String!
+      usuario_senha: String!
+   }
+
+   type LoginUsuarioResponse {
+      usuario_id: Int!
+      usuario_nome: String!
+      usuario_email: String!
       token: String!
    }
-`)
+   `
+)
+
+export default usuariosSchema
